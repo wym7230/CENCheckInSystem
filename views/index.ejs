@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="stylesheets/stylesheets.css">
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.css">
+
+  <base href="/" />
+
+</head>
+<body ng-app="cenApp">
+<div class="">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navber-inner">
+      <div class="container">
+        <a class="navbar-left navbar-brand" href="/">
+          <span><img alt="CENlogo" class="logo" src="/images/CENlogo.png"></span> CEN Check-In Management </a>
+        <p class="navbar-text"> </p>
+        <p class="navbar-right navbar-text" ng-hide="authenticated"><a href="/login">Login</a> or <a href="/register">Register</a></p>
+        <p class="navbar-right navbar-text" ng-show="authenticated"><a href="/" ng-click="signout()">Logout</a></p>
+        <p class="navbar-right navbar-text" ng-show="authenticated">Signed in as {{current_user.username}}</p>
+        <p class="navbar-right navbar-text"><a href="/app">App</a></p>
+      </div>
+    </div>
+  </nav>
+</div>
+<div>
+  <ui-view></ui-view>
+</div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+<script src="https://unpkg.com/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-resource.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-cookies.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-aria.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.js"></script>
+<script src="https://cdn.jsdelivr.net/angular-material-icons/0.4.0/angular-material-icons.min.js"></script>
+<script src="javascripts/cenApp.js"></script>
+<script src="javascripts/controllers/mainController.js"></script>
+<script src="javascripts/controllers/welcomeController.js"></script>
+<script src="javascripts/controllers/addEventController.js"></script>
+<script src="javascripts/controllers/deleteEventController.js"></script>
+<script src="javascripts/controllers/checkinController.js"></script>
+</body>
+</html>
