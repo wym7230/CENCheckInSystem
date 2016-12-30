@@ -1,0 +1,80 @@
+<div class="container">
+
+    <div class="panel panel-default space-top-06">
+        <div class="panel-heading">
+            <p id="test1"></p>
+            <h4 style="color:#4b4f56"><span class="glyphicon glyphicon-pencil" style="color:grey" aria-hidden="true"></span> Create a new event!</h4>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="name" class="form-control" id="name" placeholder="Event name" ng-model="vm.newEvent.name"/>
+                            <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-tags"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <!--<input type="text" id="start_time" value="Mickey Mouse" ng-model="vm.newEvent.start_time">-->
+
+                <div class='col-md-3'>
+                    <div class="form-group">
+                        <div class='input-group date'>
+                            <input type='text' class="form-control" id="datetimepicker" placeholder="Event start time" ng-model="vm.newEvent.start_time"/>
+                            <span class="input-group-addon" ng-model="vm.newEvent.start_time">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        $('#datetimepicker').datetimepicker().on("dp.change", function(e) {
+                            document.getElementById('datetimepicker').value = e.date;
+                            $('#datetimepicker').trigger('input');
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div>
+                <span class="btn btn-primary" ng-click="vm.addEvent()">Create!</span>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="row">
+                <h1 class="col-md-12" style="color:#4b4f56"><span class="glyphicon glyphicon-flag" style="color:grey" aria-hidden="true"></span> Events</h1>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12" ng-repeat="event in vm.events | orderBy:'start_time' : true | filter:search">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h4>{{event.name}}</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div row>
+                                <div class="col-md-8">
+                                    <div>Start time: {{event.start_time}}</div>
+                                </div>
+                                <div class="pull-right col-md-2"><span class="btn btn-success" ng-click="vm.toCheckIn(event._id)">Check in</span></div>
+                                <div class="pull-right col-md-2"><span class="btn btn-default pull-right" ng-click="vm.deleteEvent(event)">Delete</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

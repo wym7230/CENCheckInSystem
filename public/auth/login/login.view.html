@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="panel panel-default space-top-06">
+        <div class="panel-body">
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <h1 class="form-signin-heading">Sign in</h1>
+                    <div ng-if="vm.errorMessage" class="alert alert-danger" role="alert">{{vm.errorMessage}}</div>
+                    <form ng-submit="vm.login()">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="username" class="form-control" id="username"  placeholder="Username" ng-model="vm.credentials.username">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" placeholder="Password" ng-model="vm.credentials.password">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Log in</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

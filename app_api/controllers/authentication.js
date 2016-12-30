@@ -2,11 +2,6 @@ var passport = require('passport');
 var mongoose = require('mongoose');
 var Admin = mongoose.model('Admin');
 
-var sendJSONresponse = function(res, status, content) {
-    res.status(status);
-    res.json(content);
-};
-
 module.exports.login = function (req, res) {
     if(!req.body.username || !req.body.password) {
         sendJSONresponse(res, 400, {
@@ -14,7 +9,9 @@ module.exports.login = function (req, res) {
         });
         return;
     }
-    
+
+    // Call login strategy to authenticate given user
+    // return an access token
     passport.authenticate('login', function (err, user, info) {
         var token;
 
@@ -41,6 +38,8 @@ module.exports.signup = function (req, res) {
         return;
     }
 
+    // Call signup strategy to sign up and authenticate given user
+    // return an access token
     passport.authenticate('signup', function (err, user, info) {
         var token;
         if(err){
@@ -56,5 +55,10 @@ module.exports.signup = function (req, res) {
             res.status(401).json(info);
         }
     })(req, res);
+};
+
+var sendJSONresponse = function(res, status, content) {
+    res.status(status);
+    res.json(content);
 };
 

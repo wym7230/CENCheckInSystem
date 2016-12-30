@@ -1,0 +1,49 @@
+<div class="container">
+    <div class="panel panel-default space-top-06">
+        <div class="panel-heading">
+            <div class="row">
+                <h1 class="col-md-12" style="color:#4b4f56"><span class="glyphicon glyphicon-user" style="color:grey" aria-hidden="true"></span> Officers</h1>
+            </div>
+            <div class="row ">
+                <ul class="nav nav-tabs container col-md-12">
+                    <li role="presentation"><a href="officers">Officers</a></li>
+                    <li role="presentation" class="active"><a href="officers/analysis">Analysis</a></li>
+                    <li class="col-md-3 pull-right">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="q" placeholder="Search for...">
+                            <span class="input-group-btn">
+                             <button class="btn btn-default" type="button">百度一下</button>
+                             </span>
+                        </div><!-- /input-group -->
+                    </li><!-- /.col-lg-6 -->
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <table class="table">
+                <thead class="thead-inverse">
+                <tr>
+                    <th>Name</th>
+                    <th># Attended</th>
+                    <th># Unattended</th>
+                    <th># Asked for leave</th>
+                    <th>Total late time (min)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="officer in vm.officers">
+                    <td>{{officer.name}}</td>
+                    <td>{{officer.attended_numbers}}</td>
+                    <td>{{officer.unattended_numbers}}</td>
+                    <td>{{officer.asked_for_leave_numbers}}</td>
+                    <td>{{officer.total_late_time}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+</div>

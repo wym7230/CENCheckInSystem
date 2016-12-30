@@ -1,0 +1,53 @@
+<div class="container">
+    <div class="panel panel-default space-top-06">
+        <div class="panel-heading">
+            <div class="row">
+                <h1 class="col-md-12" style="color:#4b4f56"><span class="glyphicon glyphicon-user" style="color:grey" aria-hidden="true"></span> Officers</h1>
+            </div>
+            <div class="row ">
+                <ul class="nav nav-tabs container col-md-12">
+                    <li role="presentation" class="active"><a href="officers">Officers</a></li>
+                    <li role="presentation"><a href="officers/analysis">Analysis</a></li>
+                    <li class="col-md-3 pull-right">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="q" placeholder="Search for...">
+                            <span class="input-group-btn">
+                             <button class="btn btn-default" type="button">百度一下</button>
+                             </span>
+                        </div><!-- /input-group -->
+                    </li><!-- /.col-lg-6 -->
+
+                    <li class="col-md-3 pull-right">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="vm.newOfficer.name" placeholder="Add new officers">
+                            <span class="input-group-btn">
+                             <button class="btn btn-default" ng-click="vm.addOfficer()" type="button">Add!</button>
+                             </span>
+                        </div><!-- /input-group -->
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4" ng-repeat="officer in vm.officers | filter: q as results">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div row>
+                                <div class="col-md-9">
+                                    <div>{{officer.name}}</div>
+                                    <div>Position: {{officer.position || "unknown"}}</div>
+                                </div>
+                                <div class="btn btn-default pull-right col-md-3"> Edit </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

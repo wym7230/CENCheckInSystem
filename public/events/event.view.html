@@ -1,0 +1,69 @@
+<div class="container">
+
+    <div class="panel panel-default space-top-06">
+        <div class="panel-heading">
+            <div class="row">
+                <h1 class="col-md-12" style="color:#4b4f56"><span class="glyphicon glyphicon-flag" style="color:grey" aria-hidden="true"></span> {{vm.event.name}}</h1>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <table class="table table-striped">
+                <thead class="thead-inverse">
+                <tr class="row">
+                    <th class="col-md-4">Name</th>
+                    <th class="col-md-4">Status</th>
+                    <th class="col-md-4">Operations</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="row" ng-repeat="officer in vm.event.unattended_officers">
+                    <td class="col-md-4">{{officer.name}}</td>
+                    <td class="col-md-4"><span class="glyphicon glyphicon-question-sign" style="color:red" aria-hidden="true"></span> Unattended</td>
+                    <td class="col-md-4 row">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span class="btn btn-default" ng-click="vm.checkin(officer._id)">Check in</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span class="btn btn-default" ng-click="vm.vacate(officer._id)">Ask for leave</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span class="btn btn-default">Delete</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="row" ng-repeat="officer in vm.event.attended_officers">
+                    <td class="col-md-4">{{officer._id.name}}</td>
+                    <td class="col-md-4"><span class="glyphicon glyphicon-ok-sign" style="color:forestgreen" aria-hidden="true"></span> {{officer.check_in_time}}</td>
+                    <td class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <span class="btn btn-default pull-left" ng-click="vm.uncheckin(officer._id._id)">Uncheck in</span>
+                            </div>
+                            <div class="col-md-5 pull-right">
+                                <span class="btn btn-default">Delete</span>
+
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr class="row" ng-repeat="officer in vm.event.asked_for_leave_officers">
+                    <td class="col-md-4">{{officer.name}}</td>
+                    <td class="col-md-4"><span class="glyphicon glyphicon-remove-sign" style="color:peru" aria-hidden="true"></span> Not gonna attend</td>
+                    <td class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span class="btn btn-default col-md-12" ng-click="vm.unvacate(officer._id)">Restore</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

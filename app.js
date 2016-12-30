@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 
 // Bring in models
-require('./app_api/models/db')
+require('./app_api/models/db');
 // Bring in Passport-init after model is defined
 require('./app_api/config/passport-init');
 
@@ -41,6 +41,11 @@ app.use(passport.initialize());
 
 app.use('/api', routesAPI);
 app.use('/auth', authAPI);
+
+
+app.use(function(req, res) {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
