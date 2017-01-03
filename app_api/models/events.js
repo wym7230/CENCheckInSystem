@@ -16,7 +16,7 @@ var eventSchema = new mongoose.Schema({
     },
     attended_officers: [{
         _id: {type: ObjectId, ref: 'Officer'},
-        check_in_time: {type: Date, default: Date.now}
+        check_in_time:  Date
     }],
     unattended_officers: [{
         type: ObjectId,
@@ -28,7 +28,7 @@ var eventSchema = new mongoose.Schema({
     }],
     created_at: {
         type: Date,
-        default: Date.now
+        default: Date()
     }
 },{ minimize: false });
 

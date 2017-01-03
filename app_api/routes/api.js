@@ -3,6 +3,8 @@ var express = require('express');
 var router = express.Router();
 var Officer = mongoose.model('Officer');
 var Event = mongoose.model('Event');
+var moment = require('moment');
+moment().format();
 
 // Get all officers or create a new one
 router.route('/officers')
@@ -28,8 +30,9 @@ router.route('/officers')
             if(req.body.position){
                 newOfficer.position = req.body.position;
             }
+            newOfficer.created_at = moment();
             newOfficer.save(function (err, officer) {
-                if (err) return res.send(err)
+                if (err) return res.send(err);
                 return res.json(officer);
             })
         })
@@ -50,7 +53,7 @@ router.route('/officers/:id')
     .put(function (req, res) {
         Officer.findById(req.params.id, function (err, officer) {
             if(!officer){
-                return res.json("Sorry, we don't find this officer in our database");
+                return res.status(401).json("Sorry, we don't find this officer in our database");
             }
             // If rename a officer, check if there is a duplicate one, then update
             // with other input information
@@ -58,7 +61,7 @@ router.route('/officers/:id')
                 Officer.findOne({name: req.body.name}, function (err, data) {
                     if (err) res.send(err);
                     if(data){
-                        return res.json("This name " + req.body.name + " already existed, " +
+                        return res.status(401).json("This name " + req.body.name + " already existed, " +
                             "please use another one");
                     } else {
                         officer.name = req.body.name;
@@ -80,20 +83,14 @@ router.route('/officers/:id')
 
     // Psudo delete given officer
     .delete(function (req, res) {
-        Officer.findById(req.params.id, function (err, officer) {
-            if(err) return res.send(err);
-            if(officer){
-                Officer.updateById({_id: req.params.id},
-                    {$set: {active: false}},
-                    {new: true},
-                    function (err) {
-                        if(err) return res.send(err);
-                        return res.json("Officer is deleted");
-                    })
-            }else{
-                return res.json("Sorry, We don't find this officer in our database");
-            }
-        });
+        Officer.findOneAndUpdate({_id: req.params.id},
+            {$set: {active: false}},
+            {new: true},
+            function (err, data) {
+                if(err) return res.send(err);
+                return res.status(200).json(data);
+            })
+
     });
 
 // Router for events
@@ -102,6 +99,7 @@ router.route('/events')
     .get(function (req, res) {
         Event.find({}, 'name start_time', function (err, events) {
             if (err) return res.send(err);
+
             return res.json(events);
         });
     })
@@ -123,9 +121,12 @@ router.route('/events')
                     var newEvent = new Event({
                         unattended_officers: officers
                     });
-                    console.log(officers);
                     newEvent.name = req.body.name;
-                    newEvent.start_time = req.body.start_time;
+                    console.log(req.body.start_time);
+
+                    newEvent.start_time = moment(req.body.start_time, "LLLL");
+                    console.log("Saved Date" + moment(req.body.start_time, "LLLL"));
+                    newEvent.created_at = new Date();
 
                     newEvent.save(function (err, data) {
                         if (err) return res.send(err);
@@ -198,21 +199,30 @@ router.route('/events/:event_id/checkin/:id')
         //return req.json(req.params.id + " and event" + req.params.event_id);
         Officer.findById(req.params.id, '_id', function (err, officer) {
             if(err) return res.send(err);
+            var currentTime = moment();
+
+
+
             Event.update({_id: req.params.event_id},
                 {$pull: {unattended_officers: officer._id}},
                 function (err, pullRaw) {
                     if(err) return console.log(err);
                     console.log("pull unattended_officer: ", pullRaw);
                     if(pullRaw.nModified != 0){
-                        Event.update({_id: req.params.event_id},
-                            // Add to Set not working very well
-                            {$addToSet: {attended_officers: {_id:officer, check_in_time: Date.now()}}},
-                            function (err, addRaw) {
+                        Event.findByIdAndUpdate(req.params.event_id,
+                            {$addToSet: {attended_officers: {_id:officer, check_in_time: currentTime}}},
+                            {passRawResult: true},
+                            function (err, event, addRaw) {
                                 if(err) return res.send(err);
                                 console.log("addToSet attended_officer: ", addRaw);
-                                if(pullRaw.nModified != 0 && addRaw !=0){
+
+                                var start_time = event.start_time;
+                                var ms = moment(currentTime,"DD/MM/YYYY HH:mm:ss").diff(moment(start_time,"DD/MM/YYYY HH:mm:ss"));
+                                var lateTime = ms.valueOf();
+
+                                if(addRaw !=0){
                                     Officer.update({_id: req.params.id},
-                                        {$inc: {unattended_numbers: -1, attended_numbers: 1}},
+                                        {$inc: {unattended_numbers: -1, attended_numbers: 1, total_late_time: lateTime}},
                                         function (err, raw) {
                                             if(err) return console.log(err);
                                             console.log("update officer attendance: ", raw);
@@ -221,7 +231,8 @@ router.route('/events/:event_id/checkin/:id')
                                     return console.log("Check-in Failed")
                                 }
                             }
-                        )}else{
+                        )
+                    }else{
                         return console.log("Check-in failed")
                     }
                 }
@@ -234,6 +245,10 @@ router.route('/events/:event_id/checkin/:id')
 router.put('/events/:event_id/uncheckin/:id', function (req, res) {
     Officer.findById(req.params.id, '_id', function (err, officer) {
         if(err) return res.send(err);
+        // Event.findById(req.param.event_id, function (err, data) {
+        //     if(err) return res.send(err)
+        //     var lateTime = data.attended_officers[_id: req.params.id]. - data.start_time
+        // })
         Event.update({_id: req.params.event_id},
             {$pull: {attended_officers:{_id: officer._id}}},
             function (err, pullRaw) {
@@ -331,6 +346,7 @@ router.put('/events/:event_id/unvacate/:id', function (req, res) {
 
 // Before: get officer's id & event id
 // Remove this officer from this event
+// not implemented
 router.put('/events/:event_id/rm/:id', function (req, res) {
     Event.findById(req.body.event_id, function (err, event) {
         if (err) return res.send(error);
@@ -342,12 +358,6 @@ router.put('/events/:event_id/rm/:id', function (req, res) {
         for (var i = 0, len = event.unattended_officers.length; i < len; i++) {
             if(JSON.stringify(event.unattended_officers[i]) === JSON.stringify(req.params.id)){
                 return res.json("found");
-
-
-
-
-
-
             }
         }
 

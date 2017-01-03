@@ -3,8 +3,18 @@
     <div class="panel panel-default space-top-06">
         <div class="panel-heading">
             <div class="row">
-                <h1 class="col-md-12" style="color:#4b4f56"><span class="glyphicon glyphicon-flag" style="color:grey" aria-hidden="true"></span> {{vm.event.name}}</h1>
+                <h1 class="col-md-9" style="color:#4b4f56"><span class="glyphicon glyphicon-flag" style="color:grey" aria-hidden="true"></span> {{vm.event.name}}</h1>
             </div>
+
+            <div class="col-md-3 pull-right">
+                <div class="input-group">
+                    <input type="text" class="form-control" ng-model="q" placeholder="Search for...">
+                    <span class="input-group-btn">
+                             <button class="btn btn-default" type="button">谷歌一下</button>
+                             </span>
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+
         </div>
 
         <div class="panel-body">
@@ -17,7 +27,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="row" ng-repeat="officer in vm.event.unattended_officers">
+                <tr class="row" ng-repeat="officer in vm.event.unattended_officers | filter: q as results" >
                     <td class="col-md-4">{{officer.name}}</td>
                     <td class="col-md-4"><span class="glyphicon glyphicon-question-sign" style="color:red" aria-hidden="true"></span> Unattended</td>
                     <td class="col-md-4 row">
