@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var gracefulShutdown;
 var dbURI = 'mongodb://localhost:27017/cencheckin';
 if (process.env.NODE_ENV === 'production') {
-    dbURI = process.env.MONGOLAB_URI;
+    dbURI = process.env.MONGODB_URI;
 }
 
 // MongoClient.connect(url, function(err, db) {
@@ -46,12 +46,12 @@ process.on('SIGINT', function() {
         process.exit(0);
     });
 });
-// For Heroku app termination
-// process.on('SIGTERM', function() {
-//     gracefulShutdown('Heroku app termination', function() {
-//         process.exit(0);
-//     });
-// });
+For Heroku app termination
+process.on('SIGTERM', function() {
+    gracefulShutdown('Heroku app termination', function() {
+        process.exit(0);
+    });
+});
 
 
 // Bring in all models
