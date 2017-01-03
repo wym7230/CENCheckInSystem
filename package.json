@@ -22,8 +22,11 @@
     "serve-favicon": "~2.3.0"
   },
  "engines" : {
-   "node" : "*"
+   "node" : "6.9.1",
+   "npm" : "4.0.5"
  },
+  "author": "Yumeng Wang",
+  "license": "MIT",
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
