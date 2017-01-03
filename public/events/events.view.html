@@ -66,7 +66,7 @@
                         <div class="panel-body">
                             <div row>
                                 <div class="col-md-8">
-                                    <div>Start time: {{event.start_time | date: 'LLLL' : '-0800'}}</div>
+                                    <div>Start time: {{event.start_time | date: 'LLLL'}}</div>
                                 </div>
                                 <div class="pull-right col-md-2"><span class="btn btn-success" ng-click="vm.toCheckIn(event._id)">Check in</span></div>
                                 <div class="pull-right col-md-2"><span class="btn btn-default pull-right" ng-click="vm.deleteEvent(event)">Delete</span></div>
